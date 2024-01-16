@@ -1,0 +1,13 @@
+//creating laravel project
+composer create-project laravel/laravel InventoTracker
+
+cd project_name
+
+running the project
+php artisan serve
+
+//creating models
+php artisan make:model Company -m
+
+//creating control
+php artisan admin:controller --model=App\User
