@@ -11,3 +11,6 @@ php artisan make:model Company -m
 
 //creating control
 php artisan admin:controller --model=App\User
+
+//updating a model
+php artisan make:migration add_email_to_users_table --table=admin_users

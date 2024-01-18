@@ -103,6 +103,7 @@ class StockCategoryController extends AdminController
 
         $form->hidden('company_id', __('Company id'))
             ->default($u->company_id);
+      
         $form->text('name', __('Category Name'))
             ->rules('required|min:3|max:255');
         $form->radio('status', __('Status'))

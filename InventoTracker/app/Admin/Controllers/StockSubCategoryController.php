@@ -17,7 +17,7 @@ class StockSubCategoryController extends AdminController
      *
      * @var string
      */
-    protected $title = 'StockSubCategory';
+    protected $title = 'Stock Sub Categories';
 
     /**
      * Make a grid builder.
@@ -27,23 +27,50 @@ class StockSubCategoryController extends AdminController
     protected function grid()
     {
         $grid = new Grid(new StockSubCategory());
+        $grid->disableBatchActions();
+        $grid->quickSearch('name', 'company_id');
 
-        $grid->column('id', __('Id'));
+        $u = Admin::user();
+
+        $grid->model()
+            ->where('company_id', $u->company_id)
+            ->orderBy('name', 'asc');//Display items for a particular company
+        $grid->column('id', __('ID'))->sortable();
+        $grid->column('image', __('Image'))
+            ->lightbox([
+               'width' => 50, 'height' => 50, 'zooming' => true
+            ]);
+        $grid->column('name', __('Name'));
+        $grid->column('stock_category_id', __('Stock category id'))
+            ->display(function ($stock_category_id){
+                $category = StockCategory::find($stock_category_id);
+                if($category == null){
+                    return '';
+                }
+                return $category->name;
+            })->sortable();
         $grid->column('created_at', __('Created at'));
         $grid->column('updated_at', __('Updated at'));
         $grid->column('company_id', __('Company id'));
-        $grid->column('stock_category_id', __('Stock category id'));
-        $grid->column('name', __('Name'));
-        $grid->column('description', __('Description'));
-        $grid->column('status', __('Status'));
-        $grid->column('image', __('Image'));
-        $grid->column('buying_price', __('Buying price'));
-        $grid->column('selling_price', __('Selling price'));
-        $grid->column('expected_profit', __('Expected profit'));
-        $grid->column('earned_profit', __('Earned profit'));
+        $grid->column('description', __('Description'))->hide();
+        $grid->column('buying_price', __('Investment'))->sortable();
+        $grid->column('selling_price', __('Expected Sales'))->sortable();
+        $grid->column('expected_profit', __('Expected Profit'))->sortable();
+        $grid->column('earned_profit', __('Earned Profit'))->sortable();
         $grid->column('measurement_unit', __('Measurement unit'));
-        $grid->column('current_quantity', __('Current quantity'));
-        $grid->column('reorder_level', __('Reorder level'));
+        $grid->column('current_quantity', __('Current quantity'))
+            ->display(function ($current_quantity){
+                return number_format($current_quantity). ' '.$this->measurement_unit;
+            });
+        $grid->column('reorder_level', __('Reorder level'))
+            ->display(function ($reorder_level){
+                return number_format($reorder_level). ' '.$this->measurement_unit;
+            })->editable();
+        $grid->column('status', __('Status'))
+            ->label([
+                'active' =>'success',
+                'inactive' => 'danger'
+            ])->sortable();
 
         return $grid;
     }
@@ -88,7 +115,8 @@ class StockSubCategoryController extends AdminController
         $form = new Form(new StockSubCategory());
         $u = Admin::user();
 
-        $form->hidden('company_id', __('Company id'))->default($u->company_id);
+        $form->hidden('company_id', __('Company id'))
+            ->default($u->company_id);
 
         $categories = StockCategory::where([
             'company_id'=>$u->company_id,
@@ -100,18 +128,20 @@ class StockSubCategoryController extends AdminController
             ->options($categories)
             ->rules('required');
 
-        $form->number('stock_category_id', __('Stock category id'));
-        $form->textarea('name', __('Name'));
+        $form->text('name', __('Name'))
+            ->rules('required');
         $form->textarea('description', __('Description'));
-        $form->text('status', __('Status'))->default('active');
-        $form->textarea('image', __('Image'));
-        $form->number('buying_price', __('Buying price'));
-        $form->number('selling_price', __('Selling price'));
-        $form->number('expected_profit', __('Expected profit'));
-        $form->number('earned_profit', __('Earned profit'));
-        $form->text('measurement_unit', __('Measurement unit'));
-        $form->number('current_quantity', __('Current quantity'));
-        $form->number('reorder_level', __('Reorder level'));
+        $form->image('image', __('Image'))
+            ->uniqueName();
+        $form->text('measurement_unit', __('Measurement unit'))
+            ->rules('required');
+        $form->decimal('reorder_level', __('Reorder level'));
+        $form->radio('status', __('Status'))
+            ->options([
+                'active' => 'Active',
+                'inactive' => 'Incative'
+            ])
+            ->default('active');
 
         return $form;
     }
