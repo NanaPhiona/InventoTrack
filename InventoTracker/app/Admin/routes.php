@@ -18,5 +18,7 @@ Route::group([
     $router->resource('financial-periods', FinancialPeriodController::class);
     $router->resource('employees', EmployeeController::class);
     $router->resource('stock-items', StockItemController::class);
+    $router->resource('stock-records', StockRecordController::class);
+    $router->resource('companies-edit', CompanyEditController::class);
 
 });

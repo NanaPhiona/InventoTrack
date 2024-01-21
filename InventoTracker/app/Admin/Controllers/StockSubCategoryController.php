@@ -49,8 +49,6 @@ class StockSubCategoryController extends AdminController
                 }
                 return $category->name;
             })->sortable();
-        $grid->column('created_at', __('Created at'));
-        $grid->column('updated_at', __('Updated at'));
         $grid->column('company_id', __('Company id'));
         $grid->column('description', __('Description'))->hide();
         $grid->column('buying_price', __('Investment'))->sortable();
@@ -66,11 +64,23 @@ class StockSubCategoryController extends AdminController
             ->display(function ($reorder_level){
                 return number_format($reorder_level). ' '.$this->measurement_unit;
             })->editable();
+        $grid->column('in_stock', __('In Stock'))
+            ->dot([
+                'Yes'=> 'success',
+                'No'=> 'danger'
+            ])
+            ->filter([
+                'Yes' => 'In Stock',
+                'No' => 'Out of Stock'
+            ]);
         $grid->column('status', __('Status'))
             ->label([
-                'active' =>'success',
-                'inactive' => 'danger'
-            ])->sortable();
+                'Active' =>'success',
+                'Inactive' => 'danger'
+            ])->filter([
+                'Active' => 'Active',
+                'Inactive' => 'Inactive'
+            ]);;
 
         return $grid;
     }

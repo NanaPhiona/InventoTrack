@@ -15,6 +15,10 @@ class User extends Administrator
 
     protected $table = 'admin_users';
 
+    public function company(){
+        return $this->belongsTo(Company::class, 'company_id');
+    }
+
     protected static function boot(){
         parent::boot();
 
@@ -86,4 +90,6 @@ class User extends Administrator
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+
 }

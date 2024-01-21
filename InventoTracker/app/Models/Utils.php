@@ -14,10 +14,12 @@ class Utils extends Model
         ->where('status', 'Active')->first();
     }
 
+    //function for generating SKU Automatically
     static public function generateSKU($sub_category_id){
         $year = date('Y');
         $sub_category = StockSubCategory::find($sub_category_id);
         $serial = StockItem::where('stock_sub_category_id', $sub_category_id)->count() + 1;
-        $sku = $year . "-" . $sub_category->id . "-" . $serial;
+        $sku = $year . "-" . $sub_category->id. "-" . $serial;
+        return $sku;
     }
 }

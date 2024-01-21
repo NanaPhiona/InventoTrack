@@ -27,20 +27,19 @@ class StockCategoryController extends AdminController
      */
     protected function grid()
     {
+
         $grid = new Grid(new StockCategory());
 
         $u = Admin::user();
 
         $grid->model()->where('company_id', $u->company_id);
         $grid->disableBatchActions();
-        $grid->quickSearch('name', 'description', 'company_id');
+        $grid->quickSearch('name', 'description');
 
         $grid->column('id', __('Id'))->sortable();
         $grid->column('created_at', __('Created '))->display(function ($created_at) {
             return date('Y-m-d', strtotime($created_at));
         })->sortable();
-        $grid->column('updated_at', __('Updated at'));
-        $grid->column('company_id', __('Company id'));
         $grid->column('name', __('Category Name'));
         $grid->column('description', __('Description'));
         $grid->column('status', __('Status'))
