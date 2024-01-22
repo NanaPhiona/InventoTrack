@@ -30,10 +30,10 @@ class StockItemController extends AdminController
      */
     protected function grid()
     {
-        // $item = StockItem::find(4);
-        // $stock_sub_category = StockSubCategory::find($item->stock_sub_category_id);
-        // $stock_sub_category->update_self();
-        // die();
+        $item = StockItem::find(5);
+        StockItem::prepare($item);
+       die();
+
 
         $grid = new Grid(new StockItem());
 
@@ -208,8 +208,9 @@ class StockItemController extends AdminController
                 'No' => 'No'
             ])->when('Yes', function (Form $form){
                 $form->text('generate_sku', __('Enter SKU (Batch Number)'))->rules('required');
-            })->rules('required');;
+            })->rules('required');
         }else{
+            $form->hidden('update_sku', __('Update SKU'))->default('No');
             $form->radio('generate_sku', __('Generate SKU(Batch Number)'))
             ->options([
                 'Manual' => 'Manual',

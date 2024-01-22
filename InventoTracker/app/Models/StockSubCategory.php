@@ -9,33 +9,6 @@ class StockSubCategory extends Model
 {
     use HasFactory;
 
-    // protected static function boot(){
-    //     parent::boot();
-
-    //     static::creating(function ($model){
-    //         $model->update_self();
-    //     });
-
-    //     static::updating(function ($model){
-    //         $model->update_self();
-    //     });
-
-    //     static::created(function ($model){
-    //         $model->update_self();
-    //     });
-
-    //     static::updated(function ($model){
-    //         $model->update_self();
-    //     });
-
-    //     static::deleted(function ($model){
-    //         $model->update_self();
-    //     });
-
-    // }
-
-
-
 
     public function update_self(){
         $active_financial_period = Utils::getActiveFinancialPeriod($this->company_id);
