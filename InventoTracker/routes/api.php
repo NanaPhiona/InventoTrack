@@ -11,6 +11,7 @@ Route::post('auth/register', [ApiController::class, 'register']);
 Route::post('auth/login', [ApiController::class, 'login']);
 Route::post('api/{m}', [ApiController::class, 'api_update']);
 Route::get('api/{m}', [ApiController::class, 'api_list']);
+Route::post('file_uploading', [ApiController::class, 'image_uploads']);
 
 
 

@@ -15,6 +15,17 @@ use Illuminate\Support\Facades\Schema;
 
 class ApiController extends BaseController
 {
+    //Api function for uploading images
+    public function image_uploads(Request $r){
+        $path = Utils::file_upload($r->file('photo'));
+        if($path == null){
+            return "File not uploaded";
+        }
+        Utils::success([
+            'file_name' => $path
+        ], "Image uploaded successfully");
+        // die("Time for uploading Images");
+    }
 
     //Listing in API endpoints
     public function api_list(Request $r, $model){
@@ -62,6 +73,25 @@ class ApiController extends BaseController
         $object->$key = $value;
        }
        $object->company_id = $u->company_id;
+
+      
+       if($r->temp_file_field != null){
+            if(strlen($r->temp_file_field) < 1){
+                $file = $r->file('photo');
+                if ($file != null){
+                    $path = "";
+                    try{
+                        $path = Utils::file_upload($r->file('photo'));
+                    } catch(\Exception $e){
+                        $path = "";
+                    }
+                    if(strlen($path) > 3){
+                        $field_name = $r->temp_file_field;
+                        $object->$field_name = $path;
+                    }
+                }
+            }
+       }
 
       try{
         $object->save();

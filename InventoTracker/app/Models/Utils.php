@@ -10,6 +10,19 @@ class Utils extends Model
 {
     use HasFactory;
 
+    //Api function for file uploads
+    public static function file_upload($file){
+        if($file == null){
+            return "";
+        }
+        $file_ext = $file->getClientOriginalExtension();
+        $file_name = time(). "-" . rand(1000, 100000). "." .$file_ext;
+        $public_path = public_path()."/storage/images";
+        $file->move($public_path, $file_name);
+        $url = '/images'. $file_name;
+        return $url;
+    }
+
     public static function get_user(Request $r){
         $logged_in_user_id = $r->header("logged_in_user_id");
         return User::find($logged_in_user_id);
