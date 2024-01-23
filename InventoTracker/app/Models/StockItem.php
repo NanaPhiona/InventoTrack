@@ -65,7 +65,7 @@ class StockItem extends Model
         }
         $model->stock_category_id = $sub_category->stock_category_id;
 
-        $user = User::find($model->created_by_id);
+        $user = User::find($model->created_by_id); //User who created the model item
         if($user == null){
             throw new \Exception("Invalid user");
         }
@@ -79,11 +79,13 @@ class StockItem extends Model
         $model->company_id = $user->company_id;
 
         if($model->sku == null || strlen($model->sku) < 2){
-            $model->sku = Utils::generateSKu($model->sub_category_id);       
+    //dd(Utils::generateSKU($model->company_id));
+            $model->sku = Utils::generateSKU($model->stock_sub_category_id); 
+           // dd($model->sku);      
         }
         
         if($model->update_sku == "Yes" && $model->generate_sku == "Manual"){
-            $model->sku = Utils::generateSKu($model->sub_category_id);
+            $model->sku = Utils::generateSKU($model->stock_sub_category_id);
             $model->generate_sku = "No";
         }
 

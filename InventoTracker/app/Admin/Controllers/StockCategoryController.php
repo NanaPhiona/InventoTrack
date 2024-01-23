@@ -32,6 +32,7 @@ class StockCategoryController extends AdminController
 
         $u = Admin::user();
 
+        //Company ID depending on the logged in user
         $grid->model()->where('company_id', $u->company_id);
         $grid->disableBatchActions();
         $grid->quickSearch('name', 'description');

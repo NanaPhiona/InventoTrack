@@ -23,12 +23,13 @@ class Utils extends Model
     //function for generating SKU Automatically
     public static function generateSKU($stock_sub_category_id){
         $year = date('Y');
-        $stock_sub_category = StockSubCategory::find($stock_sub_category_id);
-        // if(!$sub_category){
-        //     return null;
-        // }
+        $sub_category = StockSubCategory::find($stock_sub_category_id);
+        if(!$sub_category){
+            return null;
+        }
         $serial = StockItem::where('stock_sub_category_id', $stock_sub_category_id)->count() + 1;
-        $sku = $year . "-" . $stock_sub_category->id. "-" . $serial;
+        $sku = $year . "-" . $sub_category->id. "-" . $serial;
+        // dd($sku);
         return $sku;
     }
 

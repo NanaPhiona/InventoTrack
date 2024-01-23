@@ -30,9 +30,13 @@ class StockItemController extends AdminController
      */
     protected function grid()
     {
-        $item = StockItem::find(5);
-        StockItem::prepare($item);
-       die();
+        // $item = StockItem::find(5);
+        // $sku_find = Utils::generateSKU($item->stock_sub_category_id);
+        // dd($sku_find);
+
+        // $item = StockItem::find(17);
+        // $sku_find = StockItem::prepare($item);
+        // dd($sku_find);
 
 
         $grid = new Grid(new StockItem());
@@ -101,7 +105,7 @@ class StockItemController extends AdminController
             })->sortable()->hide();
         $grid->column('description', __('Description'))->hide();
         $grid->column('barcode', __('Barcode'))->sortable();
-        $grid->column('sku', __('Sku'))->sortable();
+        $grid->column('sku', __('Sku'));
         $grid->column('buying_price', __('Buying price'))->sortable();
         $grid->column('selling_price', __('Selling price'))->sortable();
         $grid->column('original_quantity', __('Original quantity'))->sortable();

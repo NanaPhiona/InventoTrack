@@ -24,11 +24,11 @@ class User extends Administrator
 
         static::creating(function ($model){
             $name = "";
-            if ($model->first_name != null && strlen($model->fisrt_name)){
+            if ($model->first_name != null && strlen($model->first_name)){
                 $name = $model->first_name;
             }
             if ($model->last_name != null && strlen($model->last_name)){
-                $name .= " ". $model->last_name;
+                $name = $name ." ". $model->last_name;
             }
             $name = trim($name);
 
