@@ -17,7 +17,7 @@ class Utils extends Model
         }
         $file_ext = $file->getClientOriginalExtension();
         $file_name = time(). "-" . rand(1000, 100000). "." .$file_ext;
-        $public_path = public_path()."/storage/images";
+        $public_path = public_path()."/storage/images"; 
         $file->move($public_path, $file_name);
         $url = '/images'. $file_name;
         return $url;
@@ -46,7 +46,7 @@ class Utils extends Model
         return $sku;
     }
 
-    //API function
+    //API function for success response
     public static function success($data = null, $message = null){
         //set header response to json
         header('Content-Type: application/json');

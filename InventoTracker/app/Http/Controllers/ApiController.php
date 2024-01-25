@@ -15,9 +15,11 @@ use Illuminate\Support\Facades\Schema;
 
 class ApiController extends BaseController
 {
+
     //Api function for uploading images
     public function image_uploads(Request $r){
         $path = Utils::file_upload($r->file('photo'));
+        die($path);
         if($path == null){
             return "File not uploaded";
         }
@@ -37,6 +39,27 @@ class ApiController extends BaseController
         $model = "App\Models\\" . $model;
         $data = $model::where('company_id', $u->company_id)->limit(10000)->get();
         Utils::success($data, "Listed successfully.");
+
+    }
+
+    public function manifest(Request $r){
+        $u = Utils::get_user($r);
+        if ($u == null){
+            Utils::error("Unauthicated User");
+        }
+        $role = DB::table('admin_role_users')->where('user_id', $u->id)->get();
+        $company = Company::find($u->company_id);
+        $data =[
+            'name' => 'Invento Tracker',
+            'short-name' => 'IT',
+            'description' => 'Inventory Tracking System',
+            'version' => '1.0.0',
+            'author' => 'Phiona Nankya',
+            'company' => $company,
+            'user' => $u,
+            'role' => $role
+        ];
+        Utils::success($data, 'Success');
 
     }
 
@@ -76,8 +99,9 @@ class ApiController extends BaseController
 
       
        if($r->temp_file_field != null){
-            if(strlen($r->temp_file_field) < 1){
+            if(strlen($r->temp_file_field) > 1){
                 $file = $r->file('photo');
+                //If the file is not null, we set the path to an empty string
                 if ($file != null){
                     $path = "";
                     try{
